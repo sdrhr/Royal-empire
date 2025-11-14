@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Empire - Support</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="cs/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Common Header -->
+        <div class="common-header">
+            <div class="header-left">
+                <button class="menu-toggle" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="header-logo">
+                    <div class="logo-img">
+                        <img src="https://i.postimg.cc/3rtRZD22/IMG-7561.jpg" alt="Royal Empire Logo">
+                    </div>
+                    <h1>Royal Empire</h1>
+                </div>
+                <div class="user-welcome">
+                    <div class="welcome-text">Welcome Back,</div>
+                    <div class="user-name" id="headerUserName">User</div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-balance-toggle" onclick="toggleBalanceDisplay()">
+                    <div class="balance-toggle-icon">
+                        <i class="fas fa-eye-slash" id="headerBalanceIcon"></i>
+                    </div>
+                    <div class="balance-toggle-text" id="headerBalanceText">Hide Balance</div>
+                </div>
+            </div>
+        </div>
+            
+            <div class="main-content">
+                <div id="dashboard-support" class="dashboard-section active">
+                    <div class="section-header">
+                        <h2>Customer Support</h2>
+                    </div>
+                    <div class="support-options">
+                        <div class="support-card">
+                            <div class="support-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <h3>Live Chat</h3>
+                            <p>24/7 customer support</p>
+                           <button id="openChatBtn" class="chat-btn">💬 Start Chat</button>
+                        </div>
+                        <div id="chatBox" class="chat-box">
+  <div class="chat-header">
+    <span>Royal Empire Live Chat</span>
+    <button id="closeChatBtn" class="close-chat"><i class="fas fa-times"></i></button>
+  </div>
+  <div id="chatMessages" class="chat-messages"></div>
+  <div class="chat-input">
+    <input type="text" id="chatInput" placeholder="Type your message...">
+    <button id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+  </div>
+</div>
+
+                        <div class="support-card">
+                            <div class="support-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <h3>Email Support</h3>
+                            <p>support@royalempire.com</p>
+                            <button class="btn btn-support">
+                                <i class="fas fa-envelope"></i>
+                                Send Email
+                            </button>
+                        </div>
+                        
+                        <div class="support-card">
+                            <div class="support-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <h3>Phone Support</h3>
+                            <p>+1 (555) 123-4567</p>
+                            <button class="btn btn-support">
+                                <i class="fas fa-phone"></i>
+                                Call Now
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="support-info">
+                        <h3>Frequently Asked Questions</h3>
+                        <div class="faq-list">
+                            <div class="faq-item">
+                                <h4>How do I deposit funds?</h4>
+                                <p>Go to Dashboard → Deposit → Select payment method → Enter amount → Confirm transaction</p>
+                            </div>
+                            <div class="faq-item">
+                                <h4>When will I receive my withdrawal?</h4>
+                                <p>Withdrawals are processed within 24 hours of request</p>
+                            </div>
+                            <div class="faq-item">
+                                <h4>What is the minimum investment?</h4>
+                                <p>The minimum investment amount is $10</p>
+                            </div>
+                            <div class="faq-item">
+                                <h4>How do referrals work?</h4>
+                                <p>You earn commissions from your direct referrals (Level 1: 10%, Level 2: 5%, Level 3: 2%)</p>
+                            </div>
+                            <div class="faq-item">
+                                <h4>What is eUSDT?</h4>
+                                <p>eUSDT is our platform currency. 1 USD = 10 eUSDT. You can exchange between them anytime.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="/socket.io/socket.io.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        const socket = io();
+
+// Elements
+const openBtn = document.getElementById('openChatBtn');
+const chatBox = document.getElementById('chatBox');
+const closeBtn = document.getElementById('closeChatBtn');
+const sendBtn = document.getElementById('sendBtn');
+const input = document.getElementById('chatInput');
+const messages = document.getElementById('chatMessages');
+
+// Open / Close
+openBtn?.addEventListener('click', () => chatBox.style.display = 'flex');
+closeBtn?.addEventListener('click', () => chatBox.style.display = 'none');
+
+// Send
+sendBtn?.addEventListener('click', send);
+input?.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') send();
+});
+
+function send() {
+  const msg = input.value.trim();
+  if (!msg) return;
+  appendMessage(msg, 'user');
+  socket.emit('chatMessage', msg);
+  input.value = '';
+}
+
+socket.on('chatMessage', (data) => {
+  if (data.sender === 'user') {
+    appendMessage(data.text, 'user');
+  } else {
+    appendMessage(data.text, 'bot');
+  }
+});
+
+// Display messages
+function appendMessage(text, type) {
+  const div = document.createElement('div');
+  div.className = type === 'user' ? 'user-message' : 'bot-message';
+  div.textContent = text;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+    </script>
+</body>
+</html>

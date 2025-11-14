@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Empire - Level Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="cs/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Level Details Page -->
+        <div id="level-details-page" class="page active">
+            <div class="transaction-page-container">
+                <div class="transaction-header">
+                    <button class="back-button" onclick="window.location.href='referrals.html'">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Referrals
+                    </button>
+                    <h1 id="level-details-title">Level Details</h1>
+                </div>
+
+                <div class="level-details-content">
+                    <div class="level-overview" id="levelOverview">
+                        <div class="level-header-card">
+                            <div class="level-icon">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <div class="level-info">
+                                <h2 id="levelTitle">Level 1</h2>
+                                <div class="level-stats">
+                                    <div class="level-stat">
+                                        <span class="stat-value" id="totalUsers">0</span>
+                                        <span class="stat-label">Total Users</span>
+                                    </div>
+                                    <div class="level-stat">
+                                        <span class="stat-value" id="commissionRate">10%</span>
+                                        <span class="stat-label">Commission Rate</span>
+                                    </div>
+                                    <div class="level-stat">
+                                        <span class="stat-value" id="totalCommission">$0.00</span>
+                                        <span class="stat-label">Total Commission</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="level-users-section">
+                        <h3 id="levelUsersTitle">Level Users</h3>
+                        <div class="users-list" id="levelUsersList">
+                            <div class="empty-state">
+                                <i class="fas fa-users"></i>
+                                <h4>No Users Yet</h4>
+                                <p>No users have joined this level yet. Share your referral link to get started!</p>
+                                <button class="btn btn-primary" onclick="showAddUserModal()">
+                                    <i class="fas fa-plus"></i>
+                                    Add User
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="level-commission-section">
+                        <h3>Commission Information</h3>
+                        <div class="commission-details" id="commissionDetails">
+                            <div class="commission-card">
+                                <div class="commission-rate">
+                                    <h4>Commission Rate</h4>
+                                    <div class="rate-display" id="rateDisplay">10%</div>
+                                    <p>You earn <span id="commissionPercent">10</span>% of all investments made by users in this level</p>
+                                </div>
+                                <div class="commission-stats">
+                                    <div class="commission-stat">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        <div class="stat-info">
+                                            <div class="stat-value" id="totalInvestment">$0.00</div>
+                                            <div class="stat-label">Total Investment</div>
+                                        </div>
+                                    </div>
+                                    <div class="commission-stat">
+                                        <i class="fas fa-coins"></i>
+                                        <div class="stat-info">
+                                            <div class="stat-value" id="yourCommission">$0.00</div>
+                                            <div class="stat-label">Your Commission</div>
+                                        </div>
+                                    </div>
+                                    <div class="commission-stat">
+                                        <i class="fas fa-users"></i>
+                                        <div class="stat-info">
+                                            <div class="stat-value" id="activeUsers">0</div>
+                                            <div class="stat-label">Active Users</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Load level details based on URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const level = urlParams.get('level') || '1';
+        
+        const levelData = {
+            '1': { name: 'Level 1', percentage: 10, users: 0, commission: 0, investment: 0 },
+            '2': { name: 'Level 2', percentage: 5, users: 0, commission: 0, investment: 0 },
+            '3': { name: 'Level 3', percentage: 2, users: 0, commission: 0, investment: 0 }
+        };
+
+        const data = levelData[level];
+        
+        // Update page content
+        document.getElementById('level-details-title').textContent = `${data.name} Details`;
+        document.getElementById('levelTitle').textContent = data.name;
+        document.getElementById('totalUsers').textContent = data.users;
+        document.getElementById('commissionRate').textContent = data.percentage + '%';
+        document.getElementById('totalCommission').textContent = '$' + data.commission.toFixed(2);
+        document.getElementById('levelUsersTitle').textContent = `${data.name} Users`;
+        document.getElementById('rateDisplay').textContent = data.percentage + '%';
+        document.getElementById('commissionPercent').textContent = data.percentage;
+        document.getElementById('totalInvestment').textContent = '$' + data.investment.toFixed(2);
+        document.getElementById('yourCommission').textContent = '$' + data.commission.toFixed(2);
+        document.getElementById('activeUsers').textContent = data.users;
+    </script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Empire - Payment Methods</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="cs/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Common Header -->
+        <div class="common-header">
+            <div class="header-left">
+                <button class="menu-toggle" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="header-logo">
+                    <div class="logo-img">
+                        <img src="https://i.postimg.cc/3rtRZD22/IMG-7561.jpg" alt="Royal Empire Logo">
+                    </div>
+                    <h1>Royal Empire</h1>
+                </div>
+                <div class="user-welcome">
+                    <div class="welcome-text">Welcome Back,</div>
+                    <div class="user-name" id="headerUserName">User</div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-balance-toggle" onclick="toggleBalanceDisplay()">
+                    <div class="balance-toggle-icon">
+                        <i class="fas fa-eye-slash" id="headerBalanceIcon"></i>
+                    </div>
+                    <div class="balance-toggle-text" id="headerBalanceText">Hide Balance</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accounts Page Content -->
+        <div id="accounts-page" class="page active">
+            <div class="transaction-page-container">
+                <div class="transaction-header">
+                    <button class="back-button" onclick="window.location.href='dashboard.html'">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Dashboard
+                    </button>
+                    <h1 id="accounts-page-title">Payment Methods</h1>
+                </div>
+
+                <div class="transaction-content">
+                    <div class="payment-methods-section">
+                        <h2>Select Payment Method</h2>
+                        <p>Choose your preferred payment method to continue</p>
+                        
+                        <div class="payment-methods-container">
+                            <div class="payment-method-card" onclick="selectPaymentMethod('easypaisa')">
+                                <div class="payment-method-icon">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <div class="payment-method-info">
+                                    <h3>EasyPaisa</h3>
+                                    <p>Mobile wallet payment</p>
+                                    <div class="payment-features">
+                                        <span class="feature-tag">Fast</span>
+                                        <span class="feature-tag">Secure</span>
+                                    </div>
+                                </div>
+                                <div class="payment-method-arrow">
+                                    <i class="fas fa-chevron-right"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="payment-method-card" onclick="selectPaymentMethod('jazzcash')">
+                                <div class="payment-method-icon">
+                                    <i class="fas fa-wallet"></i>
+                                </div>
+                                <div class="payment-method-info">
+                                    <h3>JazzCash</h3>
+                                    <p>Mobile account payment</p>
+                                    <div class="payment-features">
+                                        <span class="feature-tag">Instant</span>
+                                        <span class="feature-tag">Easy</span>
+                                    </div>
+                                </div>
+                                <div class="payment-method-arrow">
+                                    <i class="fas fa-chevron-right"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="payment-method-card" onclick="selectPaymentMethod('binance')">
+                                <div class="payment-method-icon">
+                                    <i class="fab fa-bitcoin"></i>
+                                </div>
+                                <div class="payment-method-info">
+                                    <h3>Binance</h3>
+                                    <p>Crypto wallet payment</p>
+                                    <div class="payment-features">
+                                        <span class="feature-tag">Crypto</span>
+                                        <span class="feature-tag">Global</span>
+                                    </div>
+                                </div>
+                                <div class="payment-method-arrow">
+                                    <i class="fas fa-chevron-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Common Menu Overlay -->
+        <div id="menu-overlay" class="menu-overlay">
+            <div class="menu-content">
+                <div class="menu-header">
+                    <div class="menu-logo">
+                        <div class="logo-img">
+                            <img src="https://i.postimg.cc/3rtRZD22/IMG-7561.jpg" alt="Royal Empire Logo">
+                        </div>
+                        <h1>Royal Empire</h1>
+                    </div>
+                    <button class="menu-close" onclick="toggleMenu()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="menu-items">
+                    <div class="menu-item" onclick="window.location.href='dashboard.html'">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='transaction.html'">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Transactions</span>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='exchange.html'">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Exchange</span>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='referrals.html'">
+                        <i class="fas fa-users"></i>
+                        <span>Referrals</span>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='profile.html'">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='support.html'">
+                        <i class="fas fa-headset"></i>
+                        <span>Support</span>
+                    </div>
+                </div>
+                 <div class="menu-items">
+                    <div class="menu-item" onclick="window.location.href='about us.html'">
+                        <i class="fas fa-home"></i>
+                        <span>About us</span>
+                    </div>
+                
+                <div class="menu-footer">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-details">
+                            <div class="user-name" id="menuUserName">User Name</div>
+                            <div class="user-status">Royal Member</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-logout-full" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/menu.js"></script>
+    <script>
+        // Get transaction type from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const transactionType = urlParams.get('type') || 'deposit';
+        
+        // Update page title based on transaction type
+        document.getElementById('accounts-page-title').textContent = 
+            transactionType === 'deposit' ? 'Deposit Funds' : 'Withdraw Funds';
+        
+        // Store transaction type in localStorage for the next page
+        localStorage.setItem('transactionType', transactionType);
+        
+        function selectPaymentMethod(method) {
+            // Store payment method in localStorage
+            localStorage.setItem('paymentMethod', method);
+            
+            // Redirect to transaction page
+            window.location.href = 'transaction.html';
+        }
+    </script>
+</body>
+</html>

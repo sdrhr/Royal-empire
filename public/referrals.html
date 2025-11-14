@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Empire - Referrals</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="cs/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Common Header -->
+        <div class="common-header">
+            <div class="header-left">
+                <button class="menu-toggle" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="header-logo">
+                    <div class="logo-img">
+                        <img src="https://i.postimg.cc/3rtRZD22/IMG-7561.jpg" alt="Royal Empire Logo">
+                    </div>
+                    <h1>Royal Empire</h1>
+                </div>
+                <div class="user-welcome">
+                    <div class="welcome-text">Welcome Back,</div>
+                    <div class="user-name" id="headerUserName">User</div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-balance-toggle" onclick="toggleBalanceDisplay()">
+                    <div class="balance-toggle-icon">
+                        <i class="fas fa-eye-slash" id="headerBalanceIcon"></i>
+                    </div>
+                    <div class="balance-toggle-text" id="headerBalanceText">Hide Balance</div>
+                </div>
+            </div>
+        </div>
+            
+            <div class="main-content">
+                <div id="dashboard-referrals" class="dashboard-section active">
+                    <div class="section-header">
+                        <h2>Referral Program</h2>
+                    </div>
+                    
+                    <div class="referral-section">
+                        <div class="referral-title">Your Referral Code</div>
+                        <div class="referral-code">ROYAL-58742</div>
+                        <p>Share this code with friends and earn commissions!</p>
+                        <button class="btn btn-copy" onclick="copyReferralCode()">
+                            <i class="fas fa-copy"></i> Copy Code
+                        </button>
+                    </div>
+                    
+                    <!-- Referral Tree Structure -->
+                    <div class="referral-tree-container">
+                        <div class="referral-title">Your Referral Network</div>
+                        
+                        <!-- Level 1 -->
+                        <div class="tree-level">
+                            <div class="level-header" onclick="window.location.href='level-details.html?level=1'">
+                                <h4>Level 1</h4>
+                                <span class="level-count">0 People</span>
+                            </div>
+                            <div class="tree-branch">
+                                <!-- Users will be dynamically added here -->
+                                <div class="person-node add-user-btn" onclick="showAddUserModal()">
+                                    <div class="person-avatar">
+                                        <i class="fas fa-plus"></i>
+                                    </div>
+                                    <div class="person-info">
+                                        <div class="person-name">Add User</div>
+                                        <div class="person-status">Click to add</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Level 2 -->
+                        <div class="tree-level">
+                            <div class="level-header" onclick="window.location.href='level-details.html?level=2'">
+                                <h4>Level 2</h4>
+                                <span class="level-count">0 People</span>
+                            </div>
+                            <div class="tree-branch">
+                                <div class="more-nodes">
+                                    <div class="more-count">No users yet</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Level 3 -->
+                        <div class="tree-level">
+                            <div class="level-header" onclick="window.location.href='level-details.html?level=3'">
+                                <h4>Level 3</h4>
+                                <span class="level-count">0 People</span>
+                            </div>
+                            <div class="tree-branch">
+                                <div class="more-nodes">
+                                    <div class="more-count">No users yet</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Commission Structure -->
+                    <div class="commission-structure">
+                        <div class="referral-title">Commission Levels</div>
+                        <div class="levels-container">
+                            <div class="level-card">
+                                <h4>Level 1</h4>
+                                <div class="percentage">10%</div>
+                                <p>Direct referrals</p>
+                                <div class="person-count">0 People</div>
+                            </div>
+                            
+                            <div class="level-card">
+                                <h4>Level 2</h4>
+                                <div class="percentage">5%</div>
+                                <p>Second level</p>
+                                <div class="person-count">0 People</div>
+                            </div>
+                            
+                            <div class="level-card">
+                                <h4>Level 3</h4>
+                                <div class="percentage">2%</div>
+                                <p>Third level</p>
+                                <div class="person-count">0 People</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const email = localStorage.getItem("email") || "demo@user.com";
+  const codeEl = document.querySelector(".referral-code");
+  const levelCounts = document.querySelectorAll(".level-count");
+  const personCounts = document.querySelectorAll(".person-count");
+
+  async function loadReferrals() {
+    try {
+      const res = await fetch(`http://localhost:5000/api/referrals/${email}`);
+      const data = await res.json();
+
+      codeEl.textContent = data.referralCode;
+      document.querySelector("#headerUserName").textContent = email;
+
+      levelCounts[0].textContent = `${data.levels.level1.length} People`;
+      levelCounts[1].textContent = `${data.levels.level2.length} People`;
+      levelCounts[2].textContent = `${data.levels.level3.length} People`;
+
+      personCounts[0].textContent = `${data.levels.level1.length} People`;
+      personCounts[1].textContent = `${data.levels.level2.length} People`;
+      personCounts[2].textContent = `${data.levels.level3.length} People`;
+    } catch (err) {
+      console.error("Error loading referrals:", err);
+    }
+  }
+
+  loadReferrals();
+});
+
+function copyReferralCode() {
+  const code = document.querySelector(".referral-code").textContent;
+  navigator.clipboard.writeText(code);
+  alert("Referral code copied!");
+}
+
+
+</script>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Royal Empire - Transactions</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="cs/style.css">
+ <style>
+/* 🌌 Royal Empire Dashboard Theme */
+body {
+  background: linear-gradient(135deg, #2a1f72, #150a40);
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Common container */
+.container {
+  max-width: 1000px;
+  margin: 20px auto;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  backdrop-filter: blur(10px);
+}
+
+/* Header */
+.common-header {
+  
+  align-items: center;
+  justify-content: space-between;
+  background: #4c27d2;
+  padding: 15px 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-logo img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+
+.header-logo h1 {
+  color: gold;
+  font-size: 22px;
+  margin: 0;
+}
+
+.user-welcome .welcome-text {
+  font-size: 13px;
+  color: #fff;
+}
+
+.user-welcome .user-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: gold;
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* Account balance section */
+header h2 {
+  color: gold;
+  font-weight: 700;
+}
+
+header p {
+  color: #fff;
+  font-weight: 500;
+  margin: 6px 0;
+}
+
+#totalInvestment, #referralEarning, #totalEarning, #eusdt-balance, #total-balance {
+  background-color: #3a2cd1;
+  color: white;
+  border: none;
+  padding: 8px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Transaction form */
+form {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+}
+
+form h3 {
+  color: gold;
+}
+
+label {
+  color: #fff;
+  font-weight: 600;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  margin-top: 6px;
+  margin-bottom: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-weight: 500;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.btn {
+  width: 100%;
+  background: gold;
+  color: #2a1f72;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: #ffda44;
+  transform: scale(1.03);
+}
+
+/* Quick Actions */
+.quick-actions {
+  background: #4c27d2;
+  padding: 15px;
+  border-radius: 12px;
+  margin-top: 25px;
+}
+
+.quick-actions h3 {
+  color: gold;
+  margin-bottom: 10px;
+}
+
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn-action {
+  flex: 1;
+  background: linear-gradient(135deg, #3b1fa3, #6b3df2);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+  transition: transform 0.3s ease;
+}
+
+.btn-action:hover {
+  transform: scale(1.05);
+}
+
+/* Transaction History */
+#transaction-history {
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 15px;
+}
+
+.transaction-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 10px 0;
+  color: white;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.transaction-entry.deposit strong { color: #4caf50; }
+.transaction-entry.withdraw strong { color: #f44336; }
+
+/* Sidebar Menu Overlay */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 75%;
+  height: 100%;
+  background: #2b1b8c;
+  color: white;
+  transition: left 0.3s ease;
+  z-index: 9999;
+  overflow-y: auto;
+}
+
+.menu-overlay.active { left: 0; }
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.menu-item.active {
+  background: #4c27d2;
+  color: gold;
+}
+
+.menu-footer {
+  padding: 20px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  background: #4c27d2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: gold;
+  font-size: 18px;
+}
+
+.btn-logout-full {
+  width: 100%;
+  background: gold;
+  color: #2a1f72;
+  font-weight: 700;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.btn-logout-full:hover {
+  background: #ffda44;
+  transform: scale(1.03);
+}
+</style>
+
+</head>
+<body>
+   <div class="container">
+        <!-- Common Header -->
+        <div class="common-header">
+            <div class="header-left">
+                <button class="menu-toggle" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="header-logo">
+                    <div class="logo-img">
+                        <img src="https://i.postimg.cc/3rtRZD22/IMG-7561.jpg" alt="Royal Empire Logo">
+                    </div>
+                    <h1>Royal Empire</h1>
+                </div>
+                <div class="user-welcome">
+                    <div class="welcome-text">Welcome Back,</div>
+                    <div class="user-name" id="headerUserName">User</div>
+                </div>
+            </div>
+            
+
+  <div class="container">
+    <header>
+      <h2><strong style="margin: 20px 20px 30px 30px; color: #fff;"> Your account balance </strong> </h2>
+      <div>
+       <p>Total Balance: $<span id="total-balance">0.00</span></p>
+<p>eUSDT: <span id="eusdt-balance">0</span></p>
+<p>Total Earning: $<span id="totalEarning">0</span></p>
+<p>Referral Earning: $<span id="referralEarning">0</span></p>
+<p>Total Investment: $<span id="totalInvestment">0</span></p>
+
+
+
+      </div>
+    </header>
+     <div class="balance-display-section">
+                            <div class="balance-card">
+                                <div class="balance-header">
+                                    
+                                    <div class="balance-actions">
+                                        <button class="btn-balance-action" onclick="window.location.href='balance-details.html'">
+                                            <i class="fas fa-chart-line"></i>
+                                            View Details
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+    <main>
+      <h3>Make a Transaction</h3>
+
+      <form id="transaction-form" enctype="multipart/form-data">
+        <div class="form-group">
+          <label>Transaction Type:</label>
+          <select id="transaction-type">
+            <option value="">Select Type</option>
+            <option value="deposit">Deposit</option>
+            <option value="withdraw">Withdraw</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Payment Method:</label>
+          <select id="payment-method">
+            <option value="">Select Method</option>
+            <option value="easypaisa">EasyPaisa</option>
+            <option value="jazzcash">JazzCash</option>
+            <option value="binance">Binance</option>
+          </select>
+        </div>
+
+        <!-- Fixed deposit number (for deposits only) -->
+        <div class="highlight-box" id="deposit-number-box" style="display:none;">
+          <strong>Deposit Number:</strong> <span id="fixed-deposit-number">03256514534</span> <br>
+          <strong>Account Type:</strong> <span id="fixed-deposit-number">EASYPAISA</span>
+        </div>
+
+        <div class="form-group">
+          <label>Your Account/Number:</label>
+          <input type="text" id="user-number" placeholder="Enter your number/account" />
+        </div>
+
+       <div class="form-group">
+  <label>Amount (USDT):</label>
+  <input type="number" id="amount" min="1" required placeholder="Enter amount in USDT">
+  <div id="converted-amount" style="margin-top:6px; color:white; font-weight:600;">
+    ≈ Rs. 0.00 PKR
+  </div>
+</div>
+
+
+        <!-- Screenshot upload (for deposit only) -->
+        <div class="form-group" id="ss-upload-box">
+  <label class="file-label" for="screenshot">📸 Choose Screenshot</label>
+  <input type="file" id="screenshot" accept="image/*">
+  <img id="ss-preview" class="ss-preview" style="width: 100px; height: 100px; display: none;" />
+</div>
+
+
+        <button type="submit" class="btn">Confirm Transaction</button>
+      </form>
+
+        <div class="quick-actions">
+                            <h3>Quick Actions</h3>
+                            <div class="action-buttons">
+                                <button class="btn-action" onclick="window.location.href='referrals.html'">
+                                    <i class="fas fa-share-alt"></i>
+                                    <span>Invite Friends</span>
+                                </button>
+                                
+                                <button class="btn-action" onclick="window.location.href='exchange.html'">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    <span>Exchange</span>
+                                </button>
+                                <button class="btn-action" onclick="window.location.href='support.html'">
+                                    <i class="fas fa-headset"></i>
+                                    <span>Get Support</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+      <div id="transaction-message" class="transaction-message"></div>
+
+      <hr />
+      <h3>Transaction History</h3>
+      <div id="transaction-history">
+        <p>No transactions yet.</p>
+      </div>
+    </main>
+  </div>
+  
+        <!-- Common Menu Overlay -->
+        <div id="menu-overlay" class="menu-overlay">
+            <div class="menu-content">
+                <div class="menu-header">
+                    <div class="menu-logo">
+                        <div class="logo-img">
+                            <img src="https://i.postimg.cc/3rtRZD22/IMG-7561.jpg" alt="Royal Empire Logo">
+                        </div>
+                        <h1>Royal Empire</h1>
+                    </div>
+                    <button class="menu-close" onclick="toggleMenu()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="menu-items">
+                    <div class="menu-item active" onclick="window.location.href='dashboard.html'">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='transaction.html'">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Transactions</span>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='exchange.html'">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Exchange</span>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='referrals.html'">
+                        <i class="fas fa-users"></i>
+                        <span>Referrals</span>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='profile.html'">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='support.html'">
+                        <i class="fas fa-headset"></i>
+                        <span>Support</span>
+                    </div>
+                </div>
+                <div class="menu-items">
+                    <div class="menu-item" onclick="window.location.href='about us.html'">
+                        <i class="fas fa-home"></i>
+                        <span>About us</span>
+                    </div>
+                
+                <div class="menu-footer">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-details">
+                            <div class="user-name" id="menuUserName">User Name</div>
+                            <div class="user-status">Royal Member</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-logout-full" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/menu.js"></script>
+    <script src="js/script.js"></script>
+  <script src="js/text.js"></script>
+  <script src="js/common.js"></script>
+ <script type="module">
+  import { startAutoRefresh } from './js/common.js';
+
+  startAutoRefresh();
+
+  const form = document.getElementById("transaction-form");
+  const msg = document.getElementById("transaction-message");
+  const historyDiv = document.getElementById("transaction-history");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const type = document.getElementById("transaction-type").value;
+    const amount = parseFloat(document.getElementById("amount").value);
+    const userNumber = document.getElementById("user-number").value.trim();
+
+    if (!type || !amount || !userNumber) {
+      msg.textContent = "⚠️ Please fill all fields";
+      return;
+    }
+
+    // send to backend
+    const email = localStorage.getItem("email") || "demo@user.com";
+    try {
+      const res = await fetch("http://localhost:5000/api/transactions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, type, amount, userNumber }),
+      });
+      const data = await res.json();
+      if (res.ok) msg.textContent = "✅ Transaction submitted!";
+      else msg.textContent = "❌ " + (data.message || "Error");
+      startAutoRefresh(); // refresh balances after TX
+    } catch (err) {
+      console.error(err);
+      msg.textContent = "❌ Server error";
+    }
+  });
+</script>
+
+</body>
+</html>

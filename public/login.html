@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Empire - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="cs/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Login Page -->
+        <div id="login" class="page active">
+            <div class="logo-center">
+                <div class="logo-img">
+                    <img src="https://i.postimg.cc/3rtRZD22/IMG-7561.jpg" alt="Royal Empire Logo">
+                </div>
+                <h1>Royal Empire</h1>
+            </div>
+            
+            <div class="card">
+                <h2>Login to Your Account</h2>
+
+                <div class="social-login">
+                    <button class="btn-social btn-google" onclick="signInWithGoogle()">
+                        <i class="fab fa-google"></i>
+                        Continue with Google
+                    </button>
+                    <button class="btn-social btn-apple" onclick="signInWithApple()">
+                        <i class="fab fa-apple"></i>
+                        Continue with Apple
+                    </button>
+                </div>
+
+                <div class="divider">
+                    <span>or</span>
+                </div>
+
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Phone Number or Email Address</label>
+                        <input type="text" id="login-email" placeholder="Enter your phone number or email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="Enter your password" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Captcha</label>
+                        <div class="captcha">
+                            <div class="captcha-code" id="loginCaptchaCode">X9F3</div>
+                            <input type="text" id="login-captcha-input" placeholder="Enter captcha code" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-submit">Login</button>
+                    
+                    <div class="login-link">
+                        Don't have an account? <a href="index.html">Register here</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
