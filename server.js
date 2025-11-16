@@ -28,12 +28,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // ✅ MongoDB connection
 mongoose
-  .connect("mongodb://127.0.0.1:27017/Royalempire", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.error("❌ Mongo Error:", err));
+
 
 // 🧱 Schemas
 const transactionSchema = new mongoose.Schema({
