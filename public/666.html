@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Empire - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="cs/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Common Header -->
+        <div class="common-header">
+            <div class="header-left">
+                <button class="menu-toggle" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="header-logo">
+                    <div class="logo-img">
+                        <img src="https://i.postimg.cc/3rtRZD22/IMG-7561.jpg" alt="Royal Empire Logo">
+                    </div>
+                    <h1>Royal Empire</h1>
+                </div>
+                <div class="user-welcome">
+                    <div class="welcome-text">Welcome Back,</div>
+                    <div class="user-name" id="headerUserName">User</div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-balance-toggle" onclick="toggleBalanceDisplay()">
+                    <div class="balance-toggle-icon">
+                        <i class="fas fa-eye-slash" id="headerBalanceIcon"></i>
+                    </div>
+                    <div class="balance-toggle-text" id="headerBalanceText">Hide Balance</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Page Content -->
+        <div id="dashboard" class="page active">
+            <div class="dashboard-container">
+                <div class="main-content">
+                    <div id="dashboard-main" class="dashboard-section active">
+                        <!-- Balance Display Section -->
+                        <div class="balance-display-section">
+                            <div class="balance-card">
+                                <div class="balance-header">
+                                    <h3>Current Balance</h3>
+                                    <div class="balance-actions">
+                                        <button class="btn-balance-action" onclick="window.location.href='balance-details.html'">
+                                            <i class="fas fa-chart-line"></i>
+                                            View Details
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="balance-amount-main" id="mainBalanceAmount">$0</div>
+                                <div class="balance-eusdt">eUSDT: <span id="mainEusdtAmount">0</span></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Start Your Empire Button -->
+                        <div class="empire-start-section">
+                            <div class="empire-start-card">
+                                <div class="empire-icon">
+                                    <i class="fas fa-crown"></i>
+                                </div>
+                                <div class="empire-content">
+                                    <h3>Ready to Build Your Empire?</h3>
+                                    <p>Start your journey to financial freedom with Royal Empire. Invest now and watch your empire grow!</p>
+                                    <button class="btn-empire-start" id="empireStartBtn" onclick="startEmpire()">
+                                        <i class="fas fa-play-circle"></i>
+                                        Start Your Empire
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Deposit/Withdraw Rectangle -->
+                        <div class="action-rectangle">
+                            <div class="action-left" onclick="window.location.href='accounts.html?type=deposit'">
+                                <div class="action-icon">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                                <div class="action-title">Deposit</div>
+                                <div class="action-desc">Add funds to your account</div>
+                            </div>
+    
+                            <div class="action-right" onclick="window.location.href='accounts.html?type=withdraw'">
+                                <div class="action-icon">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                                <div class="action-title">Withdraw</div>
+                                <div class="action-desc">Take out your earnings</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Quick Actions -->
+                        <div class="quick-actions">
+                            <h3>Quick Actions</h3>
+                            <div class="action-buttons">
+                                <button class="btn-action" onclick="window.location.href='referrals.html'">
+                                    <i class="fas fa-share-alt"></i>
+                                    <span>Invite Friends</span>
+                                </button>
+                                <button class="btn-action" onclick="showDashboardSection('transactions')">
+                                    <i class="fas fa-history"></i>
+                                    <span>View History</span>
+                                </button>
+                                <button class="btn-action" onclick="window.location.href='exchange.html'">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    <span>Exchange</span>
+                                </button>
+                                <button class="btn-action" onclick="window.location.href='support.html'">
+                                    <i class="fas fa-headset"></i>
+                                    <span>Get Support</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="dashboard-transactions" class="dashboard-section">
+                        <div class="section-header">
+                            <h2>Transaction History</h2>
+                        </div>
+                       <div id="transactionsList" class="transactions-list">
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Common Menu Overlay -->
+        <div id="menu-overlay" class="menu-overlay">
+            <div class="menu-content">
+                <div class="menu-header">
+                    <div class="menu-logo">
+                        <div class="logo-img">
+                            <img src="https://i.postimg.cc/3rtRZD22/IMG-7561.jpg" alt="Royal Empire Logo">
+                        </div>
+                        <h1>Royal Empire</h1>
+                    </div>
+                    <button class="menu-close" onclick="toggleMenu()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="menu-items">
+                    <div class="menu-item active" onclick="window.location.href='dashboard.html'">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='transaction.html'">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Transactions</span>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='exchange.html'">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Exchange</span>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='referrals.html'">
+                        <i class="fas fa-users"></i>
+                        <span>Referrals</span>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='profile.html'">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='support.html'">
+                        <i class="fas fa-headset"></i>
+                        <span>Support</span>
+                    </div>
+                </div>
+                <div class="menu-items">
+                    <div class="menu-item" onclick="window.location.href='about us.html'">
+                        <i class="fas fa-home"></i>
+                        <span>About us</span>
+                    </div>
+                
+                <div class="menu-footer">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-details">
+                            <div class="user-name" id="menuUserName">User Name</div>
+                            <div class="user-status">Royal Member</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-logout-full" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/transaction.js"></script>
+
+    
+
+   <script type="module">
+document.addEventListener("DOMContentLoaded", () => {
+  const user = JSON.parse(localStorage.getItem("royalEmpireUser"));
+  const history = JSON.parse(localStorage.getItem("transactions") || "[]");
+
+  if (user) updateDashboardDisplay(user);
+  renderRecentActivity(history);
+
+  // 🔁 Listen for balance/transaction updates from other tabs
+  window.addEventListener("storage", (event) => {
+    if (event.key === "royalEmpireUser" || event.key === "transactions") {
+      const updatedUser = JSON.parse(localStorage.getItem("royalEmpireUser"));
+      const updatedHistory = JSON.parse(localStorage.getItem("transactions") || "[]");
+      if (updatedUser) updateDashboardDisplay(updatedUser);
+      renderRecentActivity(updatedHistory);
+    }
+  });
+
+
+
+// 🔹 Update dashboard balance display
+function updateDashboardDisplay(user) {
+  const balance = user.balance?.toFixed(2) || "0.00";
+  const eusdt = (user.balance * 10).toFixed(0);
+
+  document.getElementById("mainBalanceAmount").textContent = `$${balance}`;
+  document.getElementById("mainEusdtAmount").textContent = eusdt;
+}
+
+
+// 🔹 Navigate to Balance Details
+function startEmpire() {
+  window.location.href = "balance-details.html";
+}
+
+
+//document.addEventListener("DOMContentLoaded", () => {
+  const tableBody = document.querySelector("#transactionHistory tbody");
+
+  if (!tableBody) {
+    console.error("❌ Table body not found!");
+    return;
+  }
+
+  // Get transactions
+  const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+
+  if (transactions.length === 0) {
+    tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:10px;">No transactions yet</td></tr>`;
+    return;
+  }
+
+  // Reverse chronological order
+  transactions.reverse().forEach((tx) => {
+    const row = document.createElement("tr");
+
+    // Normalize fields to avoid undefined
+    const type = tx.type || "N/A";
+    const method = tx.method || (type === "daily earning" ? "System" : "N/A");
+    const amount = tx.amount ? tx.amount.toFixed(2) : "0.00";
+    const date =
+      tx.date ||
+      tx.createdAt ||
+      new Date().toLocaleString();
+    const status = tx.status || "pending";
+
+    // Capitalize first letter of type
+    const typeFormatted = type.charAt(0).toUpperCase() + type.slice(1);
+
+    row.innerHTML = `
+      <td>${date}</td>
+      <td>${typeFormatted}</td>
+      <td>${method}</td>
+      <td>$${amount}</td>
+      <td>${status}</td>
+    `;
+    tableBody.appendChild(row);
+  });
+});
+
+   
+
+</script>
+</body>
+</html>

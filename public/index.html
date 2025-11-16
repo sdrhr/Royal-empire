@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Empire - Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="cs/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Registration Page -->
+        <div id="register" class="page active">
+            <div class="logo-center">
+                <div class="logo-img">
+                    <img src="https://i.postimg.cc/3rtRZD22/IMG-7561.jpg" alt="Royal Empire Logo">
+                </div>
+                <h1>Royal Empire</h1>
+            </div>
+            
+            <div class="card">
+                <div class="success-message" id="successMessage" style="display: none;">
+                    Registration successful! Redirecting to dashboard...
+                </div>
+                
+                <h2>Create an Account</h2>
+
+                <div class="social-login">
+                    <button class="btn-social btn-google" onclick="signInWithGoogle()">
+                        <i class="fab fa-google"></i>
+                        Continue with Google
+                    </button>
+                    <button class="btn-social btn-apple" onclick="signInWithApple()">
+                        <i class="fab fa-apple"></i>
+                        Continue with Apple
+                    </button>
+                </div>
+
+                <div class="divider">
+                    <span>or</span>
+                </div>
+
+                <form id="registration-form">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" placeholder="Choose a username" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Phone Number or Email Address</label>
+                        <input type="text" id="email" placeholder="Enter your phone number or email" required>
+                        <div class="input-hint">You can use either your phone number or email address</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Create a strong password" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <select id="country" required>
+                            <option value="">Select your country</option>
+                            <option value="pakistan">Pakistan</option>
+                            <option value="usa">United States</option>
+                            <option value="uk">United Kingdom</option>
+                            <option value="india">India</option>
+                            <option value="uae">UAE</option>
+                            <option value="canada">Canada</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Captcha</label>
+                        <div class="captcha">
+                            <div class="captcha-code" id="captchaCode">A7B2</div>
+                            <input type="text" id="captchaInput" placeholder="Enter captcha code" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-submit">Register Now</button>
+                    <div class="form-group form-group-checkbox">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                            I agree to the <a href="about us.html" target="_blank" rel="noopener">Terms and Conditions</a>
+                        </label>
+                    </div>
+
+                    <script>
+                        // Prevent registration if terms not agreed
+                        (function() {
+                            var form = document.getElementById('registration-form');
+                            var agree = document.getElementById('agreeTerms');
+                            if (!form || !agree) return;
+                            form.addEventListener('submit', function(e){
+                                if (!agree.checked) {
+                                    e.preventDefault();
+                                    e.stopImmediatePropagation();
+                                    alert('You must agree to the Terms and Conditions to register.');
+                                    agree.focus();
+                                }
+                            }, true);
+                        })();
+                    </script>
+                    
+                    <button type="button" class="btn btn-login-bottom" onclick="window.location.href='login.html'">
+                        Already have an account? Login here
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate random captcha
+        function generateCaptcha() {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = '';
+            for (let i = 0; i < 4; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return result;
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing registration...');
+            
+            // Set initial captcha code
+            const captchaCode = document.getElementById('captchaCode');
+            if (captchaCode) {
+                captchaCode.textContent = generateCaptcha();
+            }
+            
+            // Registration form handler
+            const regForm = document.getElementById('registration-form');
+            if (regForm) {
+                regForm.addEventListener('submit', handleRegistration);
+            }
+        });
+
+        // Registration form handler
+        function handleRegistration(e) {
+            e.preventDefault();
+            console.log('Registration form submitted');
+            
+            // Get form values
+            const name = document.getElementById('name').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const contact = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const country = document.getElementById('country').value;
+            const captchaInput = document.getElementById('captchaInput').value;
+            const captchaCode = document.getElementById('captchaCode').textContent;
+            
+            // Validate required fields
+            if (!name || !username || !email || !password || !country || !captchaInput) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Validate captcha
+            if (captchaInput.toUpperCase() !== captchaCode) {
+                alert('Invalid captcha code. Please try again.');
+                document.getElementById('captchaCode').textContent = generateCaptcha();
+                document.getElementById('captchaInput').value = '';
+                document.getElementById('captchaInput').focus();
+                return;
+            }
+            
+            // Create user data
+            const userData = {
+                name: name,
+                username: username,
+                email: email,
+                password: password,
+                country: country,
+                balance: 100,
+                totalInvestment: 0,
+                totalEarnings: 0,
+                availableBalance: 100,
+                eusdt: 1000,
+                todayEarnings: 0,
+                registeredAt: new Date().toISOString()
+            };
+            
+            // Save user data to localStorage
+            localStorage.setItem('royalEmpireUser', JSON.stringify(userData));
+            localStorage.setItem('isLoggedIn', 'true');
+            
+            console.log('Registration successful for:', name);
+            
+            // Show success message
+            const successMessage = document.getElementById('successMessage');
+            if (successMessage) {
+                successMessage.style.display = 'block';
+            }
+            
+            // Show loading state
+            const submitBtn = document.querySelector('#registration-form .btn-submit');
+            if (submitBtn) {
+                submitBtn.textContent = 'Redirecting...';
+                submitBtn.disabled = true;
+            }
+            
+            // Redirect to dashboard after 2 seconds
+            setTimeout(function() {
+                window.location.href = 'dashboard.html';
+            }, 2000);
+        }
+
+        // Social login functions
+        function signInWithGoogle() {
+            console.log('Google sign-in initiated');
+            
+            // Show loading state
+            const googleBtn = document.querySelector('.btn-google');
+            if (googleBtn) {
+                googleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
+                googleBtn.disabled = true;
+            }
+            
+            // Simulate API call to Google
+            setTimeout(function() {
+                const randomNames = ['Alex Johnson', 'Sarah Miller', 'Mike Davis', 'Emma Wilson', 'James Brown'];
+                const randomName = randomNames[Math.floor(Math.random() * randomNames.length)];
+                
+                // Create user data
+                const userData = {
+                    name: randomName,
+                    username: randomName.toLowerCase().replace(' ', ''),
+                    contact: randomName.toLowerCase().replace(' ', '') + '@gmail.com',
+                    password: 'google-auth',
+                    country: 'usa',
+                    balance: 100,
+                    totalInvestment: 0,
+                    totalEarnings: 0,
+                    availableBalance: 100,
+                    eusdt: 1000,
+                    todayEarnings: 0,
+                    registeredAt: new Date().toISOString()
+                };
+                
+                // Save user data
+                localStorage.setItem('royalEmpireUser', JSON.stringify(userData));
+                localStorage.setItem('isLoggedIn', 'true');
+                
+                alert('Successfully signed in with Google! Welcome ' + randomName);
+                window.location.href = 'dashboard.html';
+            }, 2000);
+        }
+
+        function signInWithApple() {
+            console.log('Apple sign-in initiated');
+            
+            const appleBtn = document.querySelector('.btn-apple');
+            if (appleBtn) {
+                appleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
+                appleBtn.disabled = true;
+            }
+            
+            setTimeout(function() {
+                const randomNames = ['Chris Taylor', 'Lisa Anderson', 'David Wilson', 'Maria Garcia', 'Robert Lee'];
+                const randomName = randomNames[Math.floor(Math.random() * randomNames.length)];
+                
+                const userData = {
+                    name: randomName,
+                    username: randomName.toLowerCase().replace(' ', ''),
+                    contact: randomName.toLowerCase().replace(' ', '') + '@icloud.com',
+                    password: 'apple-auth',
+                    country: 'usa',
+                    balance: 100,
+                    totalInvestment: 0,
+                    totalEarnings: 0,
+                    availableBalance: 100,
+                    eusdt: 1000,
+                    todayEarnings: 0,
+                    registeredAt: new Date().toISOString()
+                };
+                
+                localStorage.setItem('royalEmpireUser', JSON.stringify(userData));
+                localStorage.setItem('isLoggedIn', 'true');
+                
+                alert('Successfully signed in with Apple! Welcome ' + randomName);
+                window.location.href = 'dashboard.html';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

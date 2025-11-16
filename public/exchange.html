@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Empire - Invest Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="cs/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Common Header -->
+        <div class="common-header">
+            <div class="header-left">
+                <button class="menu-toggle" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="header-logo">
+                    <div class="logo-img">
+                        <img src="https://i.postimg.cc/3rtRZD22/IMG-7561.jpg" alt="Royal Empire Logo">
+                    </div>
+                    <h1>Royal Empire</h1>
+                </div>
+                <div class="user-welcome">
+                    <div class="welcome-text">Welcome Back,</div>
+                    <div class="user-name" id="headerUserName">User</div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-balance-toggle" onclick="toggleBalanceDisplay()">
+                    <div class="balance-toggle-icon">
+                        <i class="fas fa-eye-slash" id="headerBalanceIcon"></i>
+                    </div>
+                    <div class="balance-toggle-text" id="headerBalanceText">Hide Balance</div>
+                </div>
+            </div>
+        </div>
+            <div class="main-content">
+                <div id="dashboard-exchange" class="dashboard-section active">
+                    <div class="section-header">
+                        <h2>Invest Pro</h2>
+                    </div>
+                    
+                    <div class="exchange-container">
+                        <div class="exchange-card">
+                            <div class="exchange-header">
+                                <h3>Convert Currency</h3>
+                                <p>Exchange between Dollars and eUSDT at 1$ = 10 eUSDT</p>
+                            </div>
+                            
+                            <div class="exchange-form">
+                                <div class="exchange-input-group">
+                                    <label for="fromAmount">From</label>
+                                    <div class="amount-input-container">
+                                        <input type="number" id="fromAmount" placeholder="Enter amount" min="0" step="0.01">
+                                        <select id="fromCurrency">
+                                            <option value="usd">USD ($)</option>
+                                            <option value="eusdt">eUSDT</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="exchange-swap">
+                                    <button class="btn-swap" onclick="swapCurrencies()">
+                                        <i class="fas fa-exchange-alt"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="exchange-input-group">
+                                    <label for="toAmount">To</label>
+                                    <div class="amount-input-container">
+                                        <input type="number" id="toAmount" placeholder="Converted amount" readonly>
+                                        <select id="toCurrency">
+                                            <option value="eusdt">eUSDT</option>
+                                            <option value="usd">USD ($)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="exchange-rate">
+                                    <p>Exchange Rate: <strong>1 USD = 10 eUSDT</strong></p>
+                                </div>
+                                
+                                <button class="btn btn-exchange" onclick="performExchange()">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    Convert Now
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="exchange-info">
+                            <h3>Exchange Information</h3>
+                            <div class="info-cards">
+                                <div class="info-card">
+                                    <div class="info-icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <h4>Instant Conversion</h4>
+                                    <p>All exchanges are processed instantly with no waiting time</p>
+                                </div>
+                                
+                                <div class="info-card">
+                                    <div class="info-icon">
+                                        <i class="fas fa-percentage"></i>
+                                    </div>
+                                    <h4>Zero Fees</h4>
+                                    <p>No hidden fees or charges for currency conversion</p>
+                                </div>
+                                
+                                <div class="info-card">
+                                    <div class="info-icon">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <h4>Secure</h4>
+                                    <p>All transactions are encrypted and secure</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="JS/script.js"></script>
+    <script>
+        function calculateExchange() {
+            const fromAmount = parseFloat(document.getElementById('fromAmount').value) || 0;
+            const fromCurrency = document.getElementById('fromCurrency').value;
+            const toCurrency = document.getElementById('toCurrency').value;
+            
+            let result = 0;
+            
+            if (fromCurrency === 'usd' && toCurrency === 'eusdt') {
+                result = fromAmount * 10;
+            } else if (fromCurrency === 'eusdt' && toCurrency === 'usd') {
+                result = fromAmount / 10;
+            } else {
+                result = fromAmount;
+            }
+            
+            document.getElementById('toAmount').value = result.toFixed(2);
+        }
+
+        function swapCurrencies() {
+            const fromCurrency = document.getElementById('fromCurrency');
+            const toCurrency = document.getElementById('toCurrency');
+            
+            const temp = fromCurrency.value;
+            fromCurrency.value = toCurrency.value;
+            toCurrency.value = temp;
+            
+            calculateExchange();
+        }
+
+        function performExchange() {
+            const fromAmount = parseFloat(document.getElementById('fromAmount').value) || 0;
+            const fromCurrency = document.getElementById('fromCurrency').value;
+            
+            if (fromAmount <= 0) {
+                alert('Please enter a valid amount to exchange.');
+                return;
+            }
+            
+            alert(`Exchange successful!\n\nConverted ${fromAmount} ${fromCurrency.toUpperCase()} to ${document.getElementById('toAmount').value} ${fromCurrency === 'usd' ? 'eUSDT' : 'USD'}`);
+            
+            document.getElementById('fromAmount').value = '';
+            document.getElementById('toAmount').value = '';
+        }
+
+        // Add event listeners
+        document.getElementById('fromAmount').addEventListener('input', calculateExchange);
+        document.getElementById('fromCurrency').addEventListener('change', calculateExchange);
+        document.getElementById('toCurrency').addEventListener('change', calculateExchange);
+    </script>
+</body>
+</html>
