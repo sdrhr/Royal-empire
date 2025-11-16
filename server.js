@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // ✅ MongoDB connection
 mongoose
-  .connect("mongodb://127.0.0.1:27017/investpro", {
+  .connect("mongodb://127.0.0.1:27017/Royalempire", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
