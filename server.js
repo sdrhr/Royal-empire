@@ -423,15 +423,25 @@ function generateBotReply(userMsg) {
 }
    
 // ✅ Frontend
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+// ✅ Serve all HTML files automatically
+const publicDir = path.join(__dirname, "public");
+fs.readdirSync(publicDir)
+  .filter((file) => file.endsWith(".html"))
+  .forEach((file) => {
+    const routePath =
+      file === "index.html" ? "/" : "/" + file.replace(/ /g, "-").replace(".html", "");
+    app.get(routePath, (req, res) => {
+      res.sendFile(path.join(publicDir, file));
+    });
+  });
+
+// ✅ Catch-all fallback to index.html
+app.get("*", (req, res) => {
+  res.sendFile(path.join(publicDir, "index.html"));
 });
 
 // 🚀 Start server
-const PORT = 5000;
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () =>
   console.log(`✅ Server running at http://localhost:${PORT}`)
 );
