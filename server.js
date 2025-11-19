@@ -15,14 +15,12 @@ import bodyParser from "body-parser";
 dotenv.config();
 const app = express();
 app.use(cors());
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// ✅ CORS for production frontend only
-app.use(cors({
+app.use(express.json({
   origin: "https://royal-empire.onrender.com",
   credentials: true
 }));
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 
 // ✅ Create server and socket
