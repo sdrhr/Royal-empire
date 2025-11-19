@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,213 +7,129 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="cs/style.css" />
   <style>
-  
-/* 🌌 Royal Empire Balance Details Theme */
-body {
-  background: linear-gradient(135deg, #2a1f72, #150a40);
-  font-family: "Poppins", sans-serif;
-  color: white;
-  margin: 0;
-  padding: 0;
-}
+    /* 🌌 Royal Empire Balance Details Theme */
+    body {
+      background: linear-gradient(135deg, #2a1f72, #150a40);
+      font-family: "Poppins", sans-serif;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.3);
+      backdrop-filter: blur(12px);
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #4c27d2;
+      padding: 18px 25px;
+      border-radius: 14px;
+      margin-bottom: 30px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+    .header h1 { color: gold; font-weight: 700; font-size: 1.6em; }
+    #userEmail { font-size: 0.9em; color: rgba(255,255,255,0.8); }
 
-/* Main Container */
-.container {
-  max-width: 1100px;
-  margin: 30px auto;
-  padding: 25px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
-  box-shadow: 0 0 25px rgba(0,0,0,0.3);
-  backdrop-filter: blur(12px);
-}
+    /* Balance Cards */
+    .balance-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+    .card {
+      background: linear-gradient(135deg, #3b1fa3, #6b3df2);
+      color: white;
+      border-radius: 16px;
+      padding: 22px;
+      text-align: center;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); }
+    .card h3 { color: gold; margin-bottom: 8px; font-size: 1.1em; }
+    .card p { font-size: 1.3em; font-weight: 600; }
 
-/* Header */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #4c27d2;
-  padding: 18px 25px;
-  border-radius: 14px;
-  margin-bottom: 30px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
-}
-.header h1 {
-  color: gold;
-  font-weight: 700;
-  font-size: 1.6em;
-}
-#userEmail {
-  font-size: 0.9em;
-  color: rgba(255,255,255,0.8);
-}
+    /* Packages Section */
+    .packages { margin-top: 50px; }
+    .packages h2 { color: gold; font-size: 1.4em; margin-bottom: 15px; font-weight: 700; }
+    .package-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+    .package {
+      position: relative;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      color: white;
+      border-radius: 14px;
+      padding: 18px;
+      text-align: center;
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .package::before {
+      content: "";
+      position: absolute;
+      top: -100%;
+      left: -100%;
+      width: 300%;
+      height: 300%;
+      background: radial-gradient(circle, rgba(255,215,0,0.25) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .package:hover::before { opacity: 1; animation: shine 2s infinite ease-in-out; }
+    .package:hover { transform: scale(1.05); background: linear-gradient(135deg, #4c27d2, #6b3df2); box-shadow: 0 0 30px rgba(255,215,0,0.3); }
+    .package h3 { color: gold; margin-bottom: 8px; font-size: 1.1em; }
+    .package p { font-size: 1em; color: #e0e0ff; }
+    .package button {
+      margin-top: 12px;
+      background: gold;
+      border: none;
+      color: #2a1f72;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .package button:hover { background: #ffdf44; transform: scale(1.05); box-shadow: 0 0 15px rgba(255,215,0,0.4); }
 
-/* Balance Cards */
-.balance-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
+    @keyframes shine { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.6;} 50%{transform:translate(0%,0%) scale(1.3);opacity:0.3;} }
 
-.card {
-  background: linear-gradient(135deg, #3b1fa3, #6b3df2);
-  color: white;
-  border-radius: 16px;
-  padding: 22px;
-  text-align: center;
-  border: 1px solid rgba(255, 215, 0, 0.3);
-  box-shadow: 0 0 12px rgba(0,0,0,0.2);
-  transition: all 0.3s ease;
-}
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-}
-.card h3 {
-  color: gold;
-  margin-bottom: 8px;
-  font-size: 1.1em;
-}
-.card p {
-  font-size: 1.3em;
-  font-weight: 600;
-}
+    /* History Section */
+    .history { margin-top: 50px; }
+    .history h2 { color: gold; font-weight: 700; margin-bottom: 15px; }
+    .history-entry {
+      background: rgba(255,255,255,0.08);
+      padding: 15px;
+      margin: 8px 0;
+      border-radius: 12px;
+      border-left: 5px solid gold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    }
+    .history-entry strong { color: gold; font-weight: 700; }
+    .history-entry small { color: rgba(255,255,255,0.6); font-size: 0.85em; }
+    .history-entry div:last-child { color: #c8c8ff; font-weight: 600; }
 
-/* Packages Section */
-.packages {
-  margin-top: 50px;
-}
-.packages h2 {
-  color: gold;
-  font-size: 1.4em;
-  margin-bottom: 15px;
-  font-weight: 700;
-}
-
-.package-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
-}
-
-.package {
-  position: relative;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255, 215, 0, 0.3);
-  color: white;
-  border-radius: 14px;
-  padding: 18px;
-  text-align: center;
-  box-shadow: 0 0 12px rgba(0,0,0,0.2);
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-.package::before {
-  content: "";
-  position: absolute;
-  top: -100%;
-  left: -100%;
-  width: 300%;
-  height: 300%;
-  background: radial-gradient(circle, rgba(255,215,0,0.25) 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-.package:hover::before {
-  opacity: 1;
-  animation: shine 2s infinite ease-in-out;
-}
-.package:hover {
-  transform: scale(1.05);
-  background: linear-gradient(135deg, #4c27d2, #6b3df2);
-  box-shadow: 0 0 30px rgba(255,215,0,0.3);
-}
-.package h3 {
-  color: gold;
-  margin-bottom: 8px;
-  font-size: 1.1em;
-}
-.package p {
-  font-size: 1em;
-  color: #e0e0ff;
-}
-.package button {
-  margin-top: 12px;
-  background: gold;
-  border: none;
-  color: #2a1f72;
-  font-weight: 700;
-  padding: 10px 18px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.package button:hover {
-  background: #ffdf44;
-  transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(255,215,0,0.4);
-}
-
-/* Shine animation */
-@keyframes shine {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
-  50% { transform: translate(0%, 0%) scale(1.3); opacity: 0.3; }
-}
-
-/* History Section */
-.history {
-  margin-top: 50px;
-}
-.history h2 {
-  color: gold;
-  font-weight: 700;
-  margin-bottom: 15px;
-}
-.history-entry {
-  background: rgba(255,255,255,0.08);
-  padding: 15px;
-  margin: 8px 0;
-  border-radius: 12px;
-  border-left: 5px solid gold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 0 8px rgba(0,0,0,0.2);
-}
-.history-entry strong {
-  color: gold;
-  font-weight: 700;
-}
-.history-entry small {
-  color: rgba(255,255,255,0.6);
-  font-size: 0.85em;
-}
-.history-entry div:last-child {
-  color: #c8c8ff;
-  font-weight: 600;
-}
-
-/* Scrollbar (for beauty) */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-thumb {
-  background: gold;
-  border-radius: 10px;
-}
-::-webkit-scrollbar-track {
-  background: rgba(255,255,255,0.1);
-}
-</style>
-
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-thumb { background: gold; border-radius: 10px; }
+    ::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); }
+  </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
       <h1>💰 Empire Balance Details</h1>
-      <div id="userEmail" style="color: #aaa;"></div>
+      <div id="userEmail"></div>
     </div>
 
-    <!-- Balance Overview -->
     <div class="balance-cards">
       <div class="card"><h3>Total Balance</h3><p id="totalBalanceAmount">$0.00</p></div>
       <div class="card"><h3>Total Earning</h3><p id="totalEarningsAmount">$0.00</p></div>
@@ -223,13 +138,11 @@ body {
       <div class="card"><h3>eUSDT</h3><p id="eusdtAmount">0</p></div>
     </div>
 
-    <!-- Investment Packages -->
     <div class="packages">
       <h2>📦 Build your Empire </h2>
       <div class="package-grid" id="packageGrid"></div>
     </div>
 
-    <!-- History -->
     <div class="history">
       <h2>📜 Transaction & Package History</h2>
       <div id="historyList"></div>
@@ -237,103 +150,89 @@ body {
   </div>
 
   <script>
-  const email = localStorage.getItem("email") || "demo@user.com";
-  document.getElementById("userEmail").textContent = email;
+    const API_BASE = "https://royal-empire.onrender.com";
+    const email = localStorage.getItem("email") || "demo@user.com";
+    document.getElementById("userEmail").textContent = email;
 
-  // ✅ 10 Packages
-  const packages = [
-    { name: "Inca Empire x2", amount: 10 },
-    { name: "Macedonian Empire x2", amount: 25 },
-    { name: "Aksumite Empire x2", amount: 50 },
-    { name: "Aztec Empire x2", amount: 100 },
-    { name: "Ottoman Empire x2", amount: 250 },
-    { name: "Mughal Empire x2", amount: 500 },
-    { name: "Persian Empire x2", amount: 1000 },
-    { name: "Byzantine Empire x2", amount: 2500 },
-    { name: "Roman Empire x2", amount: 5000 },
-    { name: "French Empire x2", amount: 10000 },
-  ];
+    // Packages
+    const packages = [
+      { name: "Inca Empire x2", amount: 10 },
+      { name: "Macedonian Empire x2", amount: 25 },
+      { name: "Aksumite Empire x2", amount: 50 },
+      { name: "Aztec Empire x2", amount: 100 },
+      { name: "Ottoman Empire x2", amount: 250 },
+      { name: "Mughal Empire x2", amount: 500 },
+      { name: "Persian Empire x2", amount: 1000 },
+      { name: "Byzantine Empire x2", amount: 2500 },
+      { name: "Roman Empire x2", amount: 5000 },
+      { name: "French Empire x2", amount: 10000 },
+    ];
 
-  // ✅ Create Package UI
-  const grid = document.getElementById("packageGrid");
-  grid.innerHTML = packages.map(p => `
-    <div class="package">
-      <h3>${p.name}</h3>
-      <p>Invest $${p.amount}</p>
-      <button onclick="buyPackage(${p.amount}, '${p.name}')">Buy</button>
-    </div>
-  `).join("");
+    const grid = document.getElementById("packageGrid");
+    grid.innerHTML = packages.map(p => `
+      <div class="package">
+        <h3>${p.name}</h3>
+        <p>Invest $${p.amount}</p>
+        <button onclick="buyPackage(${p.amount}, '${p.name}')">Buy</button>
+      </div>
+    `).join("");
 
-  // ✅ Update UI from backend/local
-  async function loadUserBalance() {
-    try {
-      const res = await fetch(`http://localhost:5000/api/user/${email}`);
-      const data = await res.json();
-      if (!res.ok) throw new Error("Server error");
+    async function loadUserBalance() {
+      try {
+        const res = await fetch(`${API_BASE}/api/user/${email}`);
+        const data = await res.json();
+        if (!res.ok) throw new Error("Server error");
 
-      updateUI(data);
-      localStorage.setItem("userData", JSON.stringify(data));
-    } catch (err) {
-      console.warn("⚠️ Offline mode — using local data");
-      const cached = JSON.parse(localStorage.getItem("userData") || "{}");
-      updateUI(cached);
-    }
-  }
-
-  function updateUI(data) {
-    if (!data) return;
-    document.getElementById("totalBalanceAmount").textContent = `$${data.balance?.toFixed(2) || 0}`;
-    document.getElementById("totalEarningsAmount").textContent = `$${data.totalEarning?.toFixed(2) || 0}`;
-    document.getElementById("referralEarningsAmount").textContent = `$${data.referralEarning?.toFixed(2) || 0}`;
-    document.getElementById("totalInvestmentAmount").textContent = `$${data.totalInvestment?.toFixed(2) || 0}`;
-    document.getElementById("eusdtAmount").textContent = (data.balance * 10 || 0).toFixed(2);
-
-    // Load history
-    const list = document.getElementById("historyList");
-    if (data.transactions && data.transactions.length) {
-      list.innerHTML = data.transactions.reverse().map(t => `
-        <div class="history-entry">
-          <div>
-            <strong>${t.type.toUpperCase()}</strong> - $${t.amount}
-            <br><small>${new Date(t.createdAt).toLocaleString()}</small>
-          </div>
-          <div>Status: ${t.status}</div>
-        </div>
-      `).join("");
-    } else {
-      list.innerHTML = "<p>No history yet.</p>";
-    }
-  }
-
-  // ✅ Buy Package
-  async function buyPackage(amount, name) {
-    const confirmBuy = confirm(`Buy ${name} package for $${amount}?`);
-    if (!confirmBuy) return;
-
-    try {
-      const res = await fetch("http://localhost:5000/api/packages/buy", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, amount, packageName: name }),
-      });
-      const data = await res.json();
-
-      if (res.ok) {
-        alert(`✅ ${name} package purchased!`);
-        alert("⏳  x2 profit will be add in your account after 40 days");
-        await loadUserBalance();
-      } else {
-        alert(`❌ ${data.message || "Error"}`);
+        updateUI(data);
+        localStorage.setItem("userData", JSON.stringify(data));
+      } catch {
+        const cached = JSON.parse(localStorage.getItem("userData") || "{}");
+        updateUI(cached);
       }
-    } catch (err) {
-      alert("⚠️ Server error while purchasing.");
     }
-  }
 
-  loadUserBalance();
-  setInterval(loadUserBalance, 5000);
+    function updateUI(data) {
+      if (!data) return;
+      document.getElementById("totalBalanceAmount").textContent = `$${data.balance?.toFixed(2) || 0}`;
+      document.getElementById("totalEarningsAmount").textContent = `$${data.totalEarning?.toFixed(2) || 0}`;
+      document.getElementById("referralEarningsAmount").textContent = `$${data.referralEarning?.toFixed(2) || 0}`;
+      document.getElementById("totalInvestmentAmount").textContent = `$${data.totalInvestment?.toFixed(2) || 0}`;
+      document.getElementById("eusdtAmount").textContent = ((data.balance || 0) * 10).toFixed(2);
+
+      const list = document.getElementById("historyList");
+      if (data.transactions?.length) {
+        list.innerHTML = data.transactions.slice().reverse().map(t => `
+          <div class="history-entry">
+            <div>
+              <strong>${t.type.toUpperCase()}</strong> - $${t.amount}
+              <br><small>${new Date(t.createdAt).toLocaleString()}</small>
+            </div>
+            <div>Status: ${t.status}</div>
+          </div>
+        `).join("");
+      } else list.innerHTML = "<p>No history yet.</p>";
+    }
+
+    async function buyPackage(amount, name) {
+      if (!confirm(`Buy ${name} package for $${amount}?`)) return;
+      try {
+        const res = await fetch(`${API_BASE}/api/packages/buy`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, amount, packageName: name })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          alert(`✅ ${name} purchased! ⏳ Profit will be added in 40 days.`);
+          await loadUserBalance();
+        } else alert(`❌ ${data.message || "Error"}`);
+      } catch {
+        alert("⚠️ Server error while purchasing.");
+      }
+    }
+
+    loadUserBalance();
+    setInterval(loadUserBalance, 5000);
   </script>
 </body>
 </html>
-
-<
