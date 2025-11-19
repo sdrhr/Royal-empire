@@ -18,6 +18,13 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// ✅ CORS for production frontend only
+app.use(cors({
+  origin: "https://royal-empire.onrender.com",
+  credentials: true
+}));
+
+
 // ✅ Create server and socket
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
