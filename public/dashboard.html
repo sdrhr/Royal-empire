@@ -512,7 +512,7 @@ input::placeholder {
     const email = localStorage.getItem("email") || "royal empire ";
 
     try {
-      const res = await fetch("https://royal-empire-backend.onrender.com/api/transactions", {
+      const res = await fetch("https://royal-empire-11.onrender.com/api/transactions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, type, amount, userNumber }),
