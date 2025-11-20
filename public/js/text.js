@@ -11,10 +11,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const email = localStorage.getItem("email");
   const USDT_TO_PKR = 300;
-
-  // ✅ Your correct backend URL
   const API_BASE = "https://royal-empire-11.onrender.com";
 
+  if (!email) {
+    console.error("❌ Email not found in localStorage");
+    msg.textContent = "⚠️ Please login first.";
+    msg.style.color = "red";
+    return;
+  }
   // -------------------------------
   // Convert USDT → PKR
   // -------------------------------
