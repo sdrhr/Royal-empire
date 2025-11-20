@@ -10,11 +10,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const uploadBox = document.getElementById("ss-upload-box");
 
   const email = localStorage.getItem("email");
-
   const USDT_TO_PKR = 300;
-  const API_BASE = "https://royal-empire-backend.onrender.com"; // ✅ Correct backend URL
 
+  // ✅ Your correct backend URL
+  const API_BASE = "https://royal-empire-11.onrender.com";
+
+  // -------------------------------
   // Convert USDT → PKR
+  // -------------------------------
   const usdtInput = document.getElementById("amount");
   const convertedAmountEl = document.getElementById("converted-amount");
 
@@ -28,7 +31,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // -------------------------------
   // Screenshot preview
+  // -------------------------------
   if (ssInput && ssPreview) {
     ssInput.addEventListener("change", (e) => {
       const file = e.target.files[0];
@@ -39,7 +44,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Deposit visibility
+  // -------------------------------
+  // Show/hide deposit fields
+  // -------------------------------
   const txTypeSelect = document.getElementById("transaction-type");
   if (txTypeSelect) {
     txTypeSelect.addEventListener("change", (e) => {
@@ -49,16 +56,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Load user data from backend
+  // -------------------------------
+  // Load User Data
+  // -------------------------------
   async function loadUserData() {
     try {
-      const res = await fetch(`${API_BASE}/api/user/$(email)}`);
+      // ❗ FIXED: incorrect syntax $(email)}
+      const res = await fetch(`${API_BASE}/api/user/${email}`);
+
+      if (!res.ok) throw new Error("User fetch error");
+
       const data = await res.json();
 
       localStorage.setItem("balance", data.balance || 0);
 
       if (balanceEl) balanceEl.textContent = (data.balance || 0).toFixed(2);
-      if (eusdtEl) eusdtEl.textContent = (data.balance * 10).toFixed(2);
+      if (eusdtEl) eusdtEl.textContent = ((data.balance || 0) * 10).toFixed(2);
 
       if (historyDiv && data.transactions?.length) {
         historyDiv.innerHTML = data.transactions
@@ -81,11 +94,13 @@ document.addEventListener("DOMContentLoaded", () => {
         historyDiv.innerHTML = "<p>No transactions yet.</p>";
       }
     } catch (err) {
-      console.error(err);
+      console.error("❌ loadUserData error:", err);
     }
   }
 
+  // -------------------------------
   // Submit Transaction
+  // -------------------------------
   if (form) {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -101,19 +116,24 @@ document.addEventListener("DOMContentLoaded", () => {
         msg.style.color = "red";
         return;
       }
+
       if (type === "deposit" && !file) {
         msg.textContent = "⚠️ Upload screenshot for deposit.";
         msg.style.color = "red";
         return;
       }
 
+      // Build form data
       const formData = new FormData();
       formData.append("email", email);
       formData.append("type", type);
       formData.append("method", method);
       formData.append("userNumber", userNumber);
       formData.append("amount", amount);
-      if (file && type === "deposit") formData.append("screenshot", file);
+
+      if (file && type === "deposit") {
+        formData.append("screenshot", file);
+      }
 
       msg.textContent = "Processing...";
       msg.style.color = "yellow";
