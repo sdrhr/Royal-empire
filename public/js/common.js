@@ -7,14 +7,24 @@
 // FETCH USER DATA
 // ----------------------------------------------------------
 export async function fetchUserData() {
-  const email = localStorage.getItem("email") || "demo@user.com";
+  const email = localStorage.getItem("email");
+  if (!email) {
+    console.error("❌ Email not found in localStorage");
+    return;
+  }
 
   try {
     const res = await fetch(`${API_BASE}/api/user/${email}`);
-
-    if (!res.ok) throw new Error("Failed to fetch user data");
+    if (!res.ok) throw new Error("User fetch error");
 
     const data = await res.json();
+    console.log("User data:", data);
+
+    // update DOM...
+  } catch (err) {
+    console.error("❌ Error fetching user data:", err);
+  }
+}
 
     // 🟢 Username fallback
     const username =
