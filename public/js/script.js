@@ -183,22 +183,37 @@ async function handleRegistration(e) {
 /// ==================== LOGIN ====================
 async function handleLogin(e) {
   e.preventDefault();
-  
-  const emailInput = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
-  const captchaInput = document.getElementById('login-captcha-input').value;
-  const captchaCode = document.getElementById('loginCaptchaCode').textContent;
 
-  if (!emailInput || !password || !captchaInput) {
-    alert('Please fill in all fields.');
+  const emailInput = document.getElementById('login-email');
+  const passwordInput = document.getElementById('login-password');
+  const captchaInputEl = document.getElementById('login-captcha-input');
+  const captchaCodeEl = document.getElementById('loginCaptchaCode');
+
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+  const captchaInput = captchaInputEl.value;
+  const captchaCode = captchaCodeEl.textContent;
+
+  // Force-save email in localStorage even if login fails
+  if (email) {
+    localStorage.setItem('royalEmpireEmail', email);
+  }
+
+  if (!email || !password || !captchaInput) {
+    alert('Please fill in all required fields.');
     return;
   }
 
-  // Check captcha
+  if (!isValidContact(email)) {
+    alert('Please enter a valid phone number or email.');
+    emailInput.focus();
+    return;
+  }
+
   if (captchaInput.toUpperCase() !== captchaCode) {
-    alert('Invalid captcha. Try again.');
-    document.getElementById('loginCaptchaCode').textContent = generateCaptcha();
-    document.getElementById('login-captcha-input').value = '';
+    alert('Invalid captcha code. Please try again.');
+    captchaCodeEl.textContent = generateCaptcha();
+    captchaInputEl.value = '';
     return;
   }
 
@@ -206,33 +221,29 @@ async function handleLogin(e) {
     const res = await fetch("https://royal-empire-11.onrender.com/api/login", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contact: emailInput, password })
+      body: JSON.stringify({ contact: email, password })
     });
 
     const data = await res.json();
 
     if (!res.ok) throw new Error(data.message || 'Login failed');
 
-    // --- FORCE save email here ---
-    const userEmail = data.email || emailInput; // fallback just in case
+    // Save user info properly
+    localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('royalEmpireUser', JSON.stringify({
-      email: userEmail,
-      username: data.username || userEmail.split('@')[0],
+      email: data.email || email,
+      username: data.username || email.split('@')[0],
       balance: data.balance || 0
     }));
 
-    // ✅ Save login status too
-    localStorage.setItem('isLoggedIn', 'true');
-
-    alert('Login successful — redirecting...');
-    setTimeout(() => window.location.href = 'dashboard.html', 600);
+    alert('✅ Login successful — redirecting to dashboard...');
+    setTimeout(() => (window.location.href = 'dashboard.html'), 600);
 
   } catch (err) {
     console.error('Login error:', err);
-    alert('Login failed: ' + err.message);
+    alert('❌ Login failed: ' + err.message);
   }
 }
-
 
 // ==================== OTHER FEATURES ====================
 function hideTransactionNumbers() {
