@@ -17,10 +17,14 @@ const app = express();
 // Allow only your frontend domain
 
 app.use(cors({
-  origin: ["https://royal-empire.onrender.com"], // allow your frontend domain
+  origin: [
+    "https://royal-empire.onrender.com",
+    "https://royal-empire-11.onrender.com"
+  ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
