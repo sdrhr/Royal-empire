@@ -8,16 +8,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const ssPreview = document.getElementById("ss-preview");
   const depositBox = document.getElementById("deposit-number-box");
   const uploadBox = document.getElementById("ss-upload-box");
-const email = localStorage.getItem("email");
 
-if (!email) {
-  console.warn("⚠️ No email found — redirecting to login...");
-  window.location.href = "login.html";
-  return;
-}
+  const email = localStorage.getItem("email");
+
+  if (!email) {
+    console.warn("⚠️ No email found — redirecting to login...");
+    window.location.href = "login.html";
+    return;
+  }
 
   const USDT_TO_PKR = 300;
-  const API = "https://royal-empire-backend.onrender.com"; // 🔥 FIXED BASE URL
+  const API_BASE = "https://royal-empire-backend.onrender.com"; // ✅ Correct backend URL
 
   // Convert USDT → PKR
   const usdtInput = document.getElementById("amount");
@@ -57,7 +58,7 @@ if (!email) {
   // Load user data from backend
   async function loadUserData() {
     try {
-      const res = await fetch(`${API}/api/user/${email}`);
+      const res = await fetch(`${API_BASE}/api/user/${encodeURIComponent(email)}`);
       const data = await res.json();
 
       localStorage.setItem("balance", data.balance || 0);
@@ -124,7 +125,7 @@ if (!email) {
       msg.style.color = "yellow";
 
       try {
-        const res = await fetch(`${API}/api/transactions`, {
+        const res = await fetch(`${API_BASE}/api/transactions`, {
           method: "POST",
           body: formData,
         });
