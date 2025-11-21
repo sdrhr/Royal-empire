@@ -15,7 +15,7 @@ dotenv.config();
 const app = express();
 
 // ----------------------
-// CORS for your frontends
+// CORS SETTINGS
 // ----------------------
 app.use(
   cors({
@@ -32,20 +32,20 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // ----------------------
-// HTTP + Socket.IO
+// HTTP + SOCKET.IO
 // ----------------------
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
 
 // ----------------------
-// Static & Uploads
+// STATIC FILES
 // ----------------------
 app.use("/uploads", express.static("uploads"));
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "public")));
 
 // ----------------------
-// MongoDB Connection
+// MONGODB
 // ----------------------
 mongoose
   .connect(process.env.MONGO_URI)
@@ -53,7 +53,7 @@ mongoose
   .catch((err) => console.error("❌ MongoDB Error:", err));
 
 // ----------------------
-// Schemas
+// SCHEMAS
 // ----------------------
 const transactionSchema = new mongoose.Schema({
   type: String,
@@ -68,6 +68,7 @@ const userSchema = new mongoose.Schema({
   email: String,
   username: String,
   password: String,
+  country: String,
   totalEarning: { type: Number, default: 0 },
   referralEarning: { type: Number, default: 0 },
   referralCode: String,
@@ -84,7 +85,7 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model("User", userSchema);
 
 // ----------------------
-// Multer (uploads)
+// MULTER
 // ----------------------
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -98,11 +99,12 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // ----------------------
-// Email route
+// EMAIL SENDER
 // ----------------------
 app.post("/api/send-email", async (req, res) => {
   try {
     const { to, subject, message } = req.body;
+
     if (!to || !subject || !message)
       return res.status(400).json({ message: "Missing email details" });
 
@@ -129,11 +131,14 @@ app.post("/api/send-email", async (req, res) => {
 });
 
 // ----------------------
-// Registration
+// REGISTRATION
 // ----------------------
 app.post("/api/register", async (req, res) => {
   try {
-    const { name, username, email, password, country, referralCode } = req.body;
+    let { name, username, email, password, country, referralCode } = req.body;
+
+    // 🔥 ALWAYS LOWERCASE EMAIL
+    email = email.toLowerCase().trim();
 
     if (!email || !password) {
       return res.status(400).json({ message: "Email & Password required" });
@@ -150,12 +155,12 @@ app.post("/api/register", async (req, res) => {
       name,
       username,
       email,
-      contact: email,   // important for login
+      contact: email,
       password: hashedPassword,
       country,
     });
 
-    // Save referral info if exists
+    // Referral
     if (referralCode) {
       const referrer = await User.findOne({ referralCode });
       if (referrer) {
@@ -171,22 +176,24 @@ app.post("/api/register", async (req, res) => {
     res.json({
       message: "Registration successful",
       referralCode: user.referralCode,
-      email: user.email
+      email: user.email,
     });
-
   } catch (err) {
     console.error("Register error:", err);
     res.status(500).json({ message: "Server Error" });
   }
 });
 
-
 // ----------------------
-// Login
+// LOGIN
 // ----------------------
 app.post("/api/login", async (req, res) => {
   try {
-    const { contact, password } = req.body;
+    let { contact, password } = req.body;
+
+    // 🔥 LOWERCASE EMAIL
+    contact = contact.toLowerCase().trim();
+
     const user = await User.findOne({ email: contact });
     if (!user) return res.status(400).json({ message: "User not found" });
 
@@ -205,15 +212,17 @@ app.post("/api/login", async (req, res) => {
 });
 
 // ----------------------
-// Get User Info (merged route)
+// GET USER INFO
 // ----------------------
 app.get("/api/user/:email", async (req, res) => {
   try {
-    const email = req.params.email;
+    const email = req.params.email.toLowerCase().trim(); // 🔥 FIXED
+
     const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(404).json({
+        message: "User not found",
         email,
         balance: 0,
         totalEarning: 0,
@@ -240,11 +249,14 @@ app.get("/api/user/:email", async (req, res) => {
 });
 
 // ----------------------
-// Transactions
+// TRANSACTIONS
 // ----------------------
 app.post("/api/transactions", upload.single("screenshot"), async (req, res) => {
   try {
-    const { email, type, method, amount } = req.body;
+    let { email, type, method, amount } = req.body;
+
+    email = email.toLowerCase().trim(); // 🔥 FIXED
+
     if (!email || !type || !method || !amount)
       return res.status(400).json({ message: "Missing fields" });
 
@@ -272,11 +284,14 @@ app.post("/api/transactions", upload.single("screenshot"), async (req, res) => {
 });
 
 // ----------------------
-// Package buy
+// BUY PACKAGE
 // ----------------------
 app.post("/api/packages/buy", async (req, res) => {
   try {
-    const { email, amount, packageName } = req.body;
+    let { email, amount, packageName } = req.body;
+
+    email = email.toLowerCase().trim(); // 🔥 FIXED
+
     const numericAmount = Number(amount);
     const user = await User.findOne({ email });
 
@@ -305,7 +320,7 @@ app.post("/api/packages/buy", async (req, res) => {
 });
 
 // ----------------------
-// Serve Frontend
+// FRONTEND ROUTES
 // ----------------------
 const publicDir = path.join(__dirname, "public");
 fs.readdirSync(publicDir)
@@ -315,10 +330,12 @@ fs.readdirSync(publicDir)
     app.get(route, (req, res) => res.sendFile(path.join(publicDir, file)));
   });
 
-app.get("/", (req, res) => res.sendFile(path.join(publicDir, "index.html")));
+app.get("/", (req, res) =>
+  res.sendFile(path.join(publicDir, "index.html"))
+);
 
 // ----------------------
-// Start server
+// START SERVER
 // ----------------------
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () =>
