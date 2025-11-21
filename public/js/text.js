@@ -9,16 +9,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const depositBox = document.getElementById("deposit-number-box");
   const uploadBox = document.getElementById("ss-upload-box");
 
-  const email = localStorage.getItem("email");
-  const USDT_TO_PKR = 300;
-  const API_BASE = "https://royal-empire-11.onrender.com";
+  // 🔥 FIXED LOGIN USER FETCH
+  let user = localStorage.getItem("royalEmpireUser");
 
-  if (!email) {
-    console.error("❌ Email not found in localStorage");
+  if (!user) {
+    console.error("❌ No user found in royalEmpireUser");
     msg.textContent = "⚠️ Please login first.";
     msg.style.color = "red";
     return;
   }
+
+  user = JSON.parse(user);
+  const email = user.email;
+
+  if (!email) {
+    console.error("❌ Email missing inside royalEmpireUser");
+    msg.textContent = "⚠️ Please login again.";
+    msg.style.color = "red";
+    return;
+  }
+
+  const USDT_TO_PKR = 300;
+  const API_BASE = "https://royal-empire-11.onrender.com";
+
+
+
   // -------------------------------
   // Convert USDT → PKR
   // -------------------------------
