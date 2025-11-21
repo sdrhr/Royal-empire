@@ -114,63 +114,21 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeSupportButtons();
 });
 
+const res = await fetch("https://royal-empire-11.onrender.com/api/register", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    name,
+    username,
+    email,
+    contact: email, 
+    password,
+    country,
+    referralCode: referralCode || ""
+  })
+});
 
-// ==================== REGISTRATION ====================
-// ==================== REGISTRATION ====================
-async function handleRegistration(e) {
-  e.preventDefault();
-  console.log('Registration form submitted');
 
-  const name = document.getElementById('name').value.trim();
-  const username = document.getElementById('username').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
-  const referralCode = document.getElementById('referralCode')?.value || null; // optional
-  const country = document.getElementById('country').value;
-  const captchaInput = document.getElementById('captchaInput').value;
-  const captchaCode = document.getElementById('captchaCode').textContent;
-
-  if (!name || !username || !email || !password || !country || !captchaInput) {
-    alert('Please fill in all required fields.');
-    return;
-  }
-
-  if (!isValidContact(email)) {
-    alert('Please enter a valid phone number or email.');
-    document.getElementById('email').focus();
-    return;
-  }
-
-  if (captchaInput.toUpperCase() !== captchaCode) {
-    alert('Invalid captcha code.');
-    document.getElementById('captchaCode').textContent = generateCaptcha();
-    document.getElementById('captchaInput').value = '';
-    return;
-  }
-
-  try {
-    const res = await fetch("https://royal-empire-11.onrender.com/api/register", {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, username, password, referralCode })
-    });
-
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Registration failed');
-
-    // ✅ Force-save email in localStorage
-    localStorage.setItem('royalEmpireEmail', email);
-
-    alert('✅ Registration successful — redirecting to dashboard...');
-    setTimeout(() => window.location.href = 'dashboard.html', 800);
-
-  } catch (err) {
-    console.error('Server registration error:', err);
-    alert('Registration failed: ' + err.message);
-    // ✅ Force-save email even if registration fails
-    if (email) localStorage.setItem('royalEmpireEmail', email);
-  }
-}
 
 // ==================== LOGIN ====================
 async function handleLogin(e) {
