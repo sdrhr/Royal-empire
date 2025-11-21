@@ -133,13 +133,29 @@ app.post("/api/send-email", async (req, res) => {
 // ----------------------
 app.post("/api/register", async (req, res) => {
   try {
-    const { email, password, referralCode } = req.body;
+    const { name, username, email, password, country, referralCode } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email & Password required" });
+    }
+
     let user = await User.findOne({ email });
-    if (user) return res.status(400).json({ message: "User already exists" });
+    if (user) {
+      return res.status(400).json({ message: "User already exists" });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    user = new User({ email, password: hashedPassword });
 
+    user = new User({
+      name,
+      username,
+      email,
+      contact: email,   // important for login
+      password: hashedPassword,
+      country,
+    });
+
+    // Save referral info if exists
     if (referralCode) {
       const referrer = await User.findOne({ referralCode });
       if (referrer) {
@@ -155,12 +171,15 @@ app.post("/api/register", async (req, res) => {
     res.json({
       message: "Registration successful",
       referralCode: user.referralCode,
+      email: user.email
     });
+
   } catch (err) {
     console.error("Register error:", err);
     res.status(500).json({ message: "Server Error" });
   }
 });
+
 
 // ----------------------
 // Login
