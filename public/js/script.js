@@ -175,63 +175,40 @@ async function handleRegistration(e) {
 // ==================== LOGIN ====================
 async function handleLogin(e) {
   e.preventDefault();
+  console.log("Login form submitted");
 
-  const emailInput = document.getElementById('login-email');
-  const passwordInput = document.getElementById('login-password');
-  const captchaInputEl = document.getElementById('login-captcha-input');
-  const captchaCodeEl = document.getElementById('loginCaptchaCode');
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
 
-  const email = emailInput.value.trim();
-  const password = passwordInput.value;
-  const captchaInput = captchaInputEl.value;
-  const captchaCode = captchaCodeEl.textContent;
-
-  // ✅ Force-save email even if login fails
-  if (email) localStorage.setItem('royalEmpireEmail', email);
-
-  if (!email || !password || !captchaInput) {
-    alert('Please fill in all required fields.');
-    return;
-  }
-
-  if (!isValidContact(email)) {
-    alert('Please enter a valid phone number or email.');
-    emailInput.focus();
-    return;
-  }
-
-  if (captchaInput.toUpperCase() !== captchaCode) {
-    alert('Invalid captcha code.');
-    captchaCodeEl.textContent = generateCaptcha();
-    captchaInputEl.value = '';
-    return;
-  }
+  // 🔥 FORCE-SAVE EMAIL IMMEDIATELY (before API call)
+  localStorage.setItem("royalEmpireEmail", email);
+  console.log("Email saved immediately:", localStorage.getItem("royalEmpireEmail"));
 
   try {
     const res = await fetch("https://royal-empire-11.onrender.com/api/login", {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ contact: email, password })
     });
 
     const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Login failed');
+    if (!res.ok) throw new Error(data.message || "Login failed");
 
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('royalEmpireUser', JSON.stringify({
+    // Save full user data
+    localStorage.setItem("royalEmpireUser", JSON.stringify({
       email: data.email || email,
-      username: data.username || email.split('@')[0],
+      username: data.username || email,
       balance: data.balance || 0
     }));
 
-    alert('✅ Login successful — redirecting to dashboard...');
-    setTimeout(() => window.location.href = 'dashboard.html', 600);
-
+    alert("Login successful");
+    window.location.href = "dashboard.html";
   } catch (err) {
-    console.error('Login error:', err);
-    alert('❌ Login failed: ' + err.message);
+    console.error("Login error:", err);
+    alert("❌ Login failed: " + err.message);
   }
 }
+
 
 // ==================== OTHER FEATURES ====================
 function hideTransactionNumbers() {
