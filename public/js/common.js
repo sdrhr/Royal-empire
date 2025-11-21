@@ -5,14 +5,13 @@
 const API_BASE = "https://royal-empire-11.onrender.com";
 
 // ----------------------------------------------------------
-// FETCH USER DATA
 export async function fetchUserData() {
 
-  // ✅ Get email directly (NOT royalEmpireUser)
+  // 🔥 Always use the saved login email
   const email = localStorage.getItem("royalEmpireEmail");
 
   if (!email) {
-    console.error("❌ Email not found in localStorage");
+    console.error("❌ royalEmpireEmail not found in localStorage");
     return null;
   }
 
@@ -31,7 +30,7 @@ export async function fetchUserData() {
       data.name ||
       (data.email ? data.email.split("@")[0] : "User");
 
-    // 🟢 Update visible names (header + profile)
+    // 🟢 Update visible names
     const headerName = document.getElementById("menuUserName");
     const profileName = document.getElementById("menuUserName");
     if (headerName) headerName.textContent = username;
