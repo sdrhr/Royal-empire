@@ -45,6 +45,70 @@ const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "public")));
 
 // ----------------------
+// Run once → cleans all corrupted emails and fixes DB
+app.get("/admin/fix-users", async (req, res) => {
+    try {
+        const users = await User.find({});
+        let fixedCount = 0;
+        let deletedCount = 0;
+
+        for (let user of users) {
+            let email = user.email;
+
+            // ----------------------
+            // CASE 1: invalid → delete
+            // ----------------------
+            if (
+                email === undefined ||
+                email === null ||
+                email === "" ||
+                typeof email === "number"
+            ) {
+                await User.deleteOne({ _id: user._id });
+                deletedCount++;
+                continue;
+            }
+
+            // ----------------------
+            // CASE 2: email stored incorrectly: { email: "abc@gmail.com" }
+            // ----------------------
+            if (typeof email === "object") {
+                if (email.email && typeof email.email === "string") {
+                    user.email = email.email.toLowerCase().trim();
+                    await user.save();
+                    fixedCount++;
+                } else {
+                    // Object but no valid email → delete
+                    await User.deleteOne({ _id: user._id });
+                    deletedCount++;
+                }
+                continue;
+            }
+
+            // ----------------------
+            // CASE 3: valid email string
+            // ----------------------
+            if (typeof email === "string") {
+                user.email = email.toLowerCase().trim();
+                await user.save();
+                fixedCount++;
+            }
+        }
+
+        return res.json({
+            success: true,
+            message: "Database cleanup complete",
+            fixedUsers: fixedCount,
+            deletedUsers: deletedCount
+        });
+
+    } catch (err) {
+        console.error("Fix DB Error:", err);
+        return res.status(500).json({ message: "Server error while fixing DB" });
+    }
+});
+
+
 // MONGODB
 // ----------------------
 mongoose
@@ -366,69 +430,6 @@ app.post("/api/packages/buy", async (req, res) => {
   }
 });
 // ======================= ADMIN FIX DB ROUTE =========================
-// Run once → cleans all corrupted emails and fixes DB
-app.get("/admin/fix-users", async (req, res) => {
-    try {
-        const users = await User.find({});
-        let fixedCount = 0;
-        let deletedCount = 0;
-
-        for (let user of users) {
-            let email = user.email;
-
-            // ----------------------
-            // CASE 1: invalid → delete
-            // ----------------------
-            if (
-                email === undefined ||
-                email === null ||
-                email === "" ||
-                typeof email === "number"
-            ) {
-                await User.deleteOne({ _id: user._id });
-                deletedCount++;
-                continue;
-            }
-
-            // ----------------------
-            // CASE 2: email stored incorrectly: { email: "abc@gmail.com" }
-            // ----------------------
-            if (typeof email === "object") {
-                if (email.email && typeof email.email === "string") {
-                    user.email = email.email.toLowerCase().trim();
-                    await user.save();
-                    fixedCount++;
-                } else {
-                    // Object but no valid email → delete
-                    await User.deleteOne({ _id: user._id });
-                    deletedCount++;
-                }
-                continue;
-            }
-
-            // ----------------------
-            // CASE 3: valid email string
-            // ----------------------
-            if (typeof email === "string") {
-                user.email = email.toLowerCase().trim();
-                await user.save();
-                fixedCount++;
-            }
-        }
-
-        return res.json({
-            success: true,
-            message: "Database cleanup complete",
-            fixedUsers: fixedCount,
-            deletedUsers: deletedCount
-        });
-
-    } catch (err) {
-        console.error("Fix DB Error:", err);
-        return res.status(500).json({ message: "Server error while fixing DB" });
-    }
-});
-
 
 // ----------------------
 // FRONTEND ROUTES
