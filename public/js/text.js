@@ -10,25 +10,36 @@ document.addEventListener("DOMContentLoaded", () => {
   const uploadBox = document.getElementById("ss-upload-box");
 
   // 🔥 FIXED LOGIN USER FETCH
- // robust email retrieval
-let userRaw = localStorage.getItem("royalEmpireUser");
-let email = localStorage.getItem("royalEmpireEmail") || localStorage.getItem("email") || null;
+let royalUser = localStorage.getItem("royalEmpireUser");
 
-if (userRaw) {
-  try {
-    const userObj = JSON.parse(userRaw);
-    if (userObj && typeof userObj.email === "string" && userObj.email.trim()) {
-      email = userObj.email.trim().toLowerCase();
+if (!royalUser) {
+    console.error("❌ No user found in localStorage");
+}
+
+let parsedUser = {};
+try {
+    parsedUser = JSON.parse(royalUser);
+} catch (err) {
+    console.error("❌ JSON Parse Error:", err);
+}
+
+function getSafeEmail(userObj) {
+    if (!userObj) return null;
+
+    // FIX 1 → email might be {} in your database
+    if (typeof userObj.email === "string") {
+        return userObj.email.trim().toLowerCase();
     }
-  } catch(e) {
-    console.warn("royalEmpireUser parse failed:", e);
-  }
+
+    // FIX 2 → email stored inside username
+    if (typeof userObj.username === "string" && userObj.username.includes("@")) {
+        return userObj.username.trim().toLowerCase();
+    }
+
+    console.error("❌ No valid email found in user object:", userObj);
+    return null;
 }
 
-if (!email) {
-  console.error("❌ Email not found in localStorage - cannot fetch user data");
-  return null; // or handle gracefully
-}
 
   const USDT_TO_PKR = 300;
   const API_BASE = "https://royal-empire-11.onrender.com";
@@ -80,17 +91,25 @@ if (!email) {
   // Load User Data
   // -------------------------------
 async function loadUserData() {
-  try {
-    const res = await fetch(`${API_BASE}/api/user/${user._id}`);
+    const safeEmail = getSafeEmail(parsedUser);
 
-    if (!res.ok) throw new Error("User fetch error");
+    if (!safeEmail) {
+        console.log("⚠️ Cannot load user → Email missing");
+        return;
+    }
 
-    const data = await res.json();
+    console.log("📩 Fetching user data using:", safeEmail);
 
-    localStorage.setItem("balance", data.balance || 0);
+    try {
+        const res = await fetch(`https://royal-empire-11.onrender.com/api/user/${safeEmail}`);
 
-    if (balanceEl) balanceEl.textContent = (data.balance || 0).toFixed(2);
-    if (eusdtEl) eusdtEl.textContent = ((data.balance || 0) * 10).toFixed(2);
+        if (!res.ok) throw new Error("User fetch error");
+
+        const data = await res.json();
+        console.log("✅ User Data Loaded:", data);
+
+        document.getElementById("balance").innerText = data.balance || 0;
+        document.getElementById("eusdt").innerText = data.eusdtBalance || 0
 
     if (historyDiv && data.transactions?.length) {
       historyDiv.innerHTML = data.transactions
@@ -116,6 +135,7 @@ async function loadUserData() {
     console.error("❌ loadUserData error:", err);
   }
 }
+  loadUserData();
 
 
   // -------------------------------
